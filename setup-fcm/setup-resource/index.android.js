@@ -14,21 +14,17 @@ import {
   View
 } from 'react-native';
 
-import { FCMController, FCMEVENT } from 'js/notification/FCMController';
+import { FCMController, FCMEVENT } from './js/fcm/FCMController';
 
 const sub = 'testTopicAndroid'
 
 const subTest = () => {
   Alert.alert('Subscribe:',sub);
-  //Mixpanel.trackWithProperties('Event', { name:"Sub_testTopicAndroid" });
-
   FCMController.instance().sub(sub);
 };
 
 const unsubTest = () => {
   Alert.alert('Unsubscribe:',sub);
-  //Mixpanel.trackWithProperties('Event', { name:"UnSub_testTopicAndroid" });
-
   FCMController.instance().unSub(sub);
 };
 
@@ -75,8 +71,6 @@ export default class Clogii extends Component {
     FCMController.instance().componentDidMount().addListener(FCMEVENT.ONTOKEN, function tokenCallback(token) {
       console.log('CB token = ', token);
       FCMController.instance().removeListener(FCMEVENT.ONTOKEN, tokenCallback);
-
-      //Mixpanel.initPushHandling('1027742275569');//1027742275569
     });
   }
 
