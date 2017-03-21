@@ -60,3 +60,5 @@ ios/build
 android/app/build
 ios/Pods
 google-services.json
+Podfile
+Podfile.lock

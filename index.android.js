@@ -14,7 +14,7 @@ import {
   View
 } from 'react-native';
 
-import { FCMController, FCMEVENT } from './FCMController';
+import { FCMController, FCMEVENT } from 'js/notification/FCMController';
 
 const sub = 'testTopicAndroid'
 

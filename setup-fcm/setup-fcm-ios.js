@@ -33,7 +33,7 @@ if (appName === undefined) return console.log('**ERROR** appName not defined , p
 	await runCli('echo \'installing fcm..\'');
 	await runCli('cd .. && npm i react-native-fcm --save');
 	await runCli('echo Init Pod...');
-	await runCli('cd ../ios && pod init');
+	await runCli('cd ../ios && pod init');//Optinal you may remove this if you have other script that already does this.
 
 	//pod remove tvos duplicate (TODO wait for react-native fix)
 	console.log('-------------------------------------');
