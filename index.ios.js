@@ -9,15 +9,36 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
+  Button,
+  Alert,
   View
 } from 'react-native';
+
+import { FCMController, FCMEVENT } from './FCMController';
+
+const sub = 'testTopicAndroid'
+
+const subTest = () => {
+  Alert.alert('Subscribe:', sub);
+  FCMController.instance().sub(sub);
+};
+
+const unsubTest = () => {
+  Alert.alert('Unsubscribe:', sub);
+  FCMController.instance().unSub(sub);
+};
+
+const publish = () => {
+  Alert.alert('send: to subers');
+  FCMController.instance().pub(sub, "hello everyone");
+};
 
 export default class Clogii extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Welcome to React Native FCM IOS!
         </Text>
         <Text style={styles.instructions}>
           To get started, edit index.ios.js
@@ -26,9 +47,39 @@ export default class Clogii extends Component {
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
         </Text>
+        <Button
+          onPress={subTest}
+          title="Subscribe"
+          color="#84ff84"
+        />
+        <Button
+          onPress={unsubTest}
+          title="Unsubscribe"
+          color="#ff1584"
+        />
+        <Button
+          onPress={publish}
+          title="publish"
+          color="#ff1584"
+        />
       </View>
     );
   }
+
+  //GCM Notification
+  componentDidMount() {
+    FCMController.instance().componentDidMount().addListener(FCMEVENT.ONTOKEN, function tokenCallback(token) {
+      console.log('CB token', token);
+      FCMController.instance().removeListener(FCMEVENT.ONTOKEN, tokenCallback);
+
+      //Mixpanel.addPushDeviceToken(token);//1:1027742275569:ios:ea3e8f0497d9e3ee
+    });
+  }
+
+  componentWillUnmount() {
+    FCMController.instance().componentWillUnmount();
+  }
+
 }
 
 const styles = StyleSheet.create({
