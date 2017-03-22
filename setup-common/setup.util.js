@@ -75,6 +75,15 @@ function insertLineInFile(config) {
                     case 'after':
                         fileString = fileString.replace(repString, indent + repString + '\n' + content);
                         break;
+                    case 'replaceAll':
+
+                        String.prototype.replaceAll = function (search, replacement) {
+                            var target = this;
+                            return target.replace(new RegExp(search, 'g'), replacement);
+                        }
+
+                        fileString = fileString.replaceAll(repString, content);
+                        break;
                     default:
                         fileString = fileString.replace(repString, content);
                         break;

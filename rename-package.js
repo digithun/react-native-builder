@@ -64,5 +64,29 @@ const appId = process.argv[3];
 	fs.renameSync(appName + '/android/app/src/main/java/com/' + appName.toLocaleLowerCase() + '/MainApplication.java',
 		appName + '/android/app/src/main/java/' + dirSplit.join('/') + '/MainApplication.java');
 
+	//IOS
+	const files = fs.readdirSync(appName + '/ios/');
+	var myProjName = files.filter(function (f) {
+		return f.substr(-10) === '.xcodeproj';
+	})[0];
+	const myProjPath = appName + '/ios/' + myProjName + '/project.pbxproj';
+	myProjName = myProjName.replace('.xcodeproj', '');
+	console.log('Updating target:' + myProjName + ' at ' + myProjPath + ' ...');
+
+	await insertLineInFile({
+		fileUrl: myProjPath,
+		content: '\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = ' + appId + ';\n\t\t\t\tPRODUCT_NAME = ' + appName + ';',
+		repString: '\t\t\t\tPRODUCT_NAME = ' + appName + ';',
+		option: 'replaceAll',
+		indent: ''
+	});
+
+	await insertLineInFile({
+		fileUrl: appName + '/ios/' + appName + '/info.plist',
+		content: '$(PRODUCT_BUNDLE_IDENTIFIER)',
+		repString: 'org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)',
+		option: 'replace',
+		indent: ''
+	});
 
 })();

@@ -5,12 +5,12 @@ var {
 
 let appName = 'Clogii';
 let packageAndBundle = 'com.clogii.clog';
-let FBId = '1234567890'
+let FBId = '1234567890';
 
 (async() => {
     //initial setup
-    await runCli('react-native init ' + appName);
-    await runCli('node rename-package.js ' + appName + ' ' + packageAndBundle);
+    // await runCli('react-native init ' + appName);
+    // await runCli('node rename-package.js ' + appName + ' ' + packageAndBundle);
 
     // //setup fcm
     await runCli('node setup-fcm/android-setup.js ' + appName);
