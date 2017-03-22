@@ -34,6 +34,6 @@ $ node setup
 ## TODO
 - [x] Setup Automation with fcm Android
 - [x] Setup Automation with fcm IOS (Partially)
-- [ ] Setup Automation with fbsdk Android
+- [x] Setup Automation with fbsdk Android
 - [x] Setup Automation with fbsdk IOS (Partially)
 - [ ] Evn file for change setting instead of embeded in .js

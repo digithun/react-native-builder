@@ -17,12 +17,12 @@ var {
 console.log('**rename android application id**');
 'use strict';
 const appName = process.argv[2];
-const appId = process.argv[3];
+const appPackage = process.argv[3];
 (async() => {
 	//android
 	await insertLineInFile({
 		fileUrl: appName + '/android/app/build.gradle',
-		content: '        applicationId "' + appId + '"',
+		content: '        applicationId "' + appPackage + '"',
 		repString: '        applicationId "com.' + appName.toLocaleLowerCase() + '"',
 		option: 'replace',
 		indent: ''
@@ -30,7 +30,7 @@ const appId = process.argv[3];
 
 	await insertLineInFile({
 		fileUrl: appName + '/android/app/src/main/AndroidManifest.xml',
-		content: appId,
+		content: appPackage,
 		repString: 'com.' + appName.toLocaleLowerCase(),
 		option: 'replace',
 		indent: ''
@@ -38,7 +38,7 @@ const appId = process.argv[3];
 
 	await insertLineInFile({
 		fileUrl: appName + '/android/app/src/main/java/com/' + appName.toLocaleLowerCase() + '/MainActivity.java',
-		content: appId,
+		content: appPackage,
 		repString: 'com.' + appName.toLocaleLowerCase(),
 		option: 'replace',
 		indent: ''
@@ -46,14 +46,14 @@ const appId = process.argv[3];
 
 	await insertLineInFile({
 		fileUrl: appName + '/android/app/src/main/java/com/' + appName.toLocaleLowerCase() + '/MainApplication.java',
-		content: appId,
+		content: appPackage,
 		repString: 'com.' + appName.toLocaleLowerCase(),
 		option: 'replace',
 		indent: ''
 	});
 	await runCli('npm i mkdir-recursive --save');
 
-	let dirSplit = appId.split('.');
+	let dirSplit = appPackage.split('.');
 	var fx = require('mkdir-recursive');
 	fx.mkdirSync(appName + '/android/app/src/main/java/' + dirSplit.join('/'));
 
@@ -75,7 +75,7 @@ const appId = process.argv[3];
 
 	await insertLineInFile({
 		fileUrl: myProjPath,
-		content: '\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = ' + appId + ';\n\t\t\t\tPRODUCT_NAME = ' + appName + ';',
+		content: '\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = ' + appPackage + ';\n\t\t\t\tPRODUCT_NAME = ' + appName + ';',
 		repString: '\t\t\t\tPRODUCT_NAME = ' + appName + ';',
 		option: 'replaceAll',
 		indent: ''

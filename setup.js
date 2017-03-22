@@ -5,12 +5,12 @@ var {
 
 let appName = 'Clogii';
 let packageAndBundle = 'com.clogii.clog';
-let FBId = '1234567890';
+let FBId = '1824824607769616';
 
 (async() => {
     //initial setup
-    // await runCli('react-native init ' + appName);
-    // await runCli('node rename-package.js ' + appName + ' ' + packageAndBundle);
+    await runCli('react-native init ' + appName);
+    await runCli('node rename-package.js ' + appName + ' ' + packageAndBundle);
 
     // //setup fcm
     await runCli('node setup-fcm/android-setup.js ' + appName);
@@ -18,5 +18,9 @@ let FBId = '1234567890';
     await runCli('node setup-fcm/helper-setup.js ' + appName); //optional
 
     //setup fbsdk
-    
+    if (FBId && FBId.length > 0) {
+        await runCli('node setup-fb/android-setup.js ' + FBId + ' ' + appName + ' ' + appPackage);
+        await runCli('node setup-fb/ios-setup.js ' + FBId + ' ' + appName);
+    }
+
 })();
