@@ -23,11 +23,6 @@ const appName = process.argv[3]; //app name when init first time
 const appPackage = process.argv[4]; //app package name, eg com.foo.bar
 
 (async() => {
-	await runCli('npm init -f');
-	await runCli('echo \'installing FB SDK..\'');
-	await runCli('cd ' + appName + ' && react-native install react-native-fbsdk');
-	await runCli('echo \'linking FB SDK to your project..\'');
-	await runCli('cd ' + appName + ' && react-native link react-native-fbsdk');
 	await runCli('npm i xml2js --save');
 
 	//android setup from https://github.com/facebook/react-native-fbsdk

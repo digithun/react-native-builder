@@ -9,10 +9,11 @@ let FBId = '1824824607769616';
 
 (async() => {
     //initial setup
+    await runCli('npm init -f');
     await runCli('react-native init ' + appName);
 
     var os = require('os');
-    if (is.platform().indexOf('win') == 0) {
+    if (os.platform().indexOf('win') == 0) {
         //Windows //TODO local.properties
     } else {
         //OSX / linux
@@ -22,17 +23,31 @@ let FBId = '1824824607769616';
     //
     await runCli('node rename-package.js ' + appName + ' ' + appPackage);
 
-    // //setup fcm
+    //////////////////////////setup fcm
+
+    //common
+    await runCli('echo \'Installing FCM..\'');
+    await runCli('cd ' + appName + ' && npm i react-native-fcm --save');
+    await runCli('echo \'Linking FCM to your project..\'');
+    await runCli('cd ' + appName + ' && react-native link react-native-fcm');
+    //Platform
     await runCli('node setup-fcm/android-setup.js ' + appName);
     await runCli('node setup-fcm/ios-setup.js ' + appName + ' ' + appPackage);
     //TODO XCODE
     console.log('**Auto Setup complete**\n\n please open your project and do the following:');
-    console.log(' Open your Xcdoe, Select your project Capabilities and enable Keychan Sharing and Background Modes > Remote notifications.');
+    console.log(' Open your Xcode, Select your project Capabilities > Background Modes > Remote notifications. Also check push notification');
+
 
     await runCli('node setup-fcm/helper-setup.js ' + appName); //optional
 
-    //setup fbsdk
+    ////////////////////////////setup fbsdk
     if (FBId && FBId.length > 0) {
+        //common
+        await runCli('echo \'Installing FB SDK..\'');
+        await runCli('cd ' + appName + ' && react-native install react-native-fbsdk');
+        await runCli('echo \'Linking FB SDK to your project..\'');
+        await runCli('cd ' + appName + ' && react-native link react-native-fbsdk');
+        //Platform
         await runCli('node setup-fb/android-setup.js ' + FBId + ' ' + appName + ' ' + appPackage);
         await runCli('node setup-fb/ios-setup.js ' + FBId + ' ' + appName);
     }

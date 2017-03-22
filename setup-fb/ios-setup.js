@@ -17,7 +17,6 @@ var {
 } = setup_utils;
 
 (async() => {
-  await runCli('npm init -f');
   await runCli('npm i plist --save');
   await runCli('npm i xcode --save');
   await runCli('npm i adm-zip --save');

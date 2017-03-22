@@ -32,8 +32,6 @@ if (appName === undefined) return console.log('**ERROR** appName not defined , p
 	await runCli('npm init -f');
 	await runCli('echo \'installing packages..\'');
 	await runCli('npm i xcode  --save');
-	await runCli('echo \'installing fcm..\'');
-	await runCli('cd ' + appName + ' && npm i react-native-fcm --save');
 	await runCli('echo Init Pod...');
 	await runCli('cd ' + appName + '/ios && pod init'); //Optinal you may remove this if you have other script that already does this.
 
@@ -108,7 +106,7 @@ if (appName === undefined) return console.log('**ERROR** appName not defined , p
 
 	console.log('***********************************\n***********************************\n***********************************');
 	console.log('**Auto Setup complete**\n\n please open your project and do the following:');
-	console.log(' Open your Xcdoe, Select your project Capabilities > Background Modes > Remote notifications. Also check push notification');
+	console.log(' Open your Xcode, Select your project Capabilities > Background Modes > Remote notifications. Also check push notification');
 
 	let keyChain =
 		'<?xml version="1.0" encoding="UTF-8"?>\n' +
