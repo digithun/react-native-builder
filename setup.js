@@ -5,6 +5,7 @@ var {
 
 let appName = 'Clogii';
 let packageAndBundle = 'com.clogii.clog';
+let FBId = '1234567890'
 
 (async() => {
     //initial setup
@@ -17,4 +18,5 @@ let packageAndBundle = 'com.clogii.clog';
     await runCli('node setup-fcm/helper-setup.js ' + appName); //optional
 
     //setup fbsdk
+    
 })();
