@@ -3,18 +3,10 @@ var execSync = require('child_process').execSync;
 
 function runCli(cli) {
     return new Promise((resolve) => {
-
         let output = execSync(cli).toString();
         console.log(output);
         console.log('---------------');
         resolve();
-        // function (error, stdout, stderr) {
-        //     if (stdout) console.log('stdout: ' + stdout);
-        //     if (stderr) console.log('stderr: ' + stderr);
-        //     if (error !== null) console.log('exec error: ' + error);
-
-
-        // };
     });
 }
 
@@ -56,13 +48,6 @@ function insertClassToGradle(config) {
         });
     })
 };
-// await insertLineInFile({
-// 		fileUrl: 'ios/' + appName + '/AppDelegate.m',
-// 		content: '  [FIRApp configure];\n  [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];',
-// 		repString: 'didFinishLaunchingWithOptions:(NSDictionary *)launchOptions\n{',
-// 		option: 'after',
-// 		indent: ''
-// 	});
 
 function insertLineInFile(config) {
     return new Promise((resolve) => {

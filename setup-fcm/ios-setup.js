@@ -102,10 +102,11 @@ if (appName === undefined) return console.log('**ERROR** appName not defined , p
 		indent: ''
 	});
 
-	console.log('***********************************');
-	console.log('**Auto Setup complete**\n please open your project and do the following:');
+	console.log('***********************************\n***********************************\n***********************************');
+	console.log('**Auto Setup complete**\n\n please open your project and do the following:');
 	console.log(' 1. Open your Xcdoe, Select your project Capabilities and enable Keychan Sharing and Background Modes > Remote notifications.');
 	console.log(' 2. Make sure your google plist in the project and is target for your main project');
+	console.log(' 3. Make sure your project bundle identifier is correct');
 
 
 })();
