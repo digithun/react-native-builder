@@ -32,18 +32,6 @@ if (appName === undefined) return console.log('**ERROR** appName not defined , p
 	await runCli('npm init -f');
 	await runCli('echo \'installing packages..\'');
 	await runCli('npm i xcode  --save');
-	await runCli('echo Init Pod...');
-	await runCli('cd ' + appName + '/ios && pod init'); //Optinal you may remove this if you have other script that already does this.
-
-	//pod remove tvos duplicate (TODO wait for react-native fix)
-	console.log('-------------------------------------');
-	await insertLineInFile({
-		fileUrl: appName + '/ios/Podfile',
-		content: '',
-		repString: '  target \'' + appName + '-tvOSTests\' do\n    inherit! :search_paths\n    # Pods for testing\n  end',
-		option: 'replace',
-		indent: ''
-	});
 
 	//pod add fcm
 	await insertLineInFile({
@@ -108,19 +96,7 @@ if (appName === undefined) return console.log('**ERROR** appName not defined , p
 	console.log('**Auto Setup complete**\n\n please open your project and do the following:');
 	console.log(' Open your Xcode, Select your project Capabilities > Background Modes > Remote notifications. Also check push notification');
 
-	let keyChain =
-		'<?xml version="1.0" encoding="UTF-8"?>\n' +
-		'<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n' +
-		'<plist version="1.0">\n' +
-		'<dict>\n' +
-		'	<key>keychain-access-groups</key>\n' +
-		'	<array>\n' +
-		'		<string>$(AppIdentifierPrefix)' + appPackage + '</string>\n' +
-		'	</array>\n' +
-		'</dict>\n' +
-		'</plist>';
-
-	await runCli('echo "'+keyChain+'" > '+appName+'ios/'+appName+'/'+appName+'.entitlements');
+	await addKeychain(appName);
 
 })();
 
@@ -168,5 +144,29 @@ function addGoogleServiceFileToProj(appName) {
 
 			resolve(null);
 		});
+	});
+}
+
+function addKeychain(appName) {
+
+	return new Promise((resolve) => {
+		let keyChain =
+			'<?xml version="1.0" encoding="UTF-8"?>\n' +
+			'<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n' +
+			'<plist version="1.0">\n' +
+			'<dict>\n' +
+			'	<key>keychain-access-groups</key>\n' +
+			'	<array>\n' +
+			'		<string>$(AppIdentifierPrefix)' + appPackage + '</string>\n' +
+			'	</array>\n' +
+			'</dict>\n' +
+			'</plist>';
+
+
+		let fs = require('fs');
+		let fileName = appName + '/ios/' + appName + '/' + appName + '.entitlements';
+		fs.writeFileSync(fileName, keyChain);
+
+		resolve(null);
 	});
 }

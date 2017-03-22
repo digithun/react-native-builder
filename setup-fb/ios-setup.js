@@ -28,7 +28,10 @@ var {
   const xcode = require('xcode');
   const AdmZip = require('adm-zip');
 
-  const frameworkDir = 'ios/Frameworks/';
+  const appId = process.argv[2];
+  const appName = process.argv[3];
+
+  const frameworkDir = appName + '/ios/Frameworks/';
   const frameworkUrl = 'https://origincache.facebook.com/developers/resources/?id=facebook-ios-sdk-current.zip';
 
   // Get Facebook App ID and App Name.
@@ -36,8 +39,6 @@ var {
     console.log('Usage: ' + __filename + ' <APPID> <APPNAME>');
     process.exit(-1);
   }
-  const appId = process.argv[2];
-  const appName = process.argv[3];
 
   // Download the FBSDK frameworks into a directory ./ios/Frameworks
   try {
@@ -45,6 +46,7 @@ var {
   } catch (e) {
     fs.mkdirSync(frameworkDir);
   }
+
   const zipFilePath = path.join(frameworkDir, 'fbsdk.zip');
   const out = fs.createWriteStream(zipFilePath);
   const curl = spawn('curl', ['-#k', frameworkUrl]);
@@ -144,4 +146,4 @@ var {
   fs.writeFileSync(plistFilePath, plist.build(plistObject));
   console.log('Finished updating ' + plistFilePath);
 
-});
+})();
