@@ -19,8 +19,8 @@ let FBId = '1824824607769616';
 
     //setup fbsdk
     if (FBId && FBId.length > 0) {
-        await runCli('node setup-fb/android_setup.js ' + FBId + ' ' + appName + ' ' + appPackage);
-        await runCli('node setup-fb/ios_setup.js ' + FBId + ' ' + appName);
+        await runCli('node setup-fb/android-setup.js ' + FBId + ' ' + appName + ' ' + appPackage);
+        await runCli('node setup-fb/ios-setup.js ' + FBId + ' ' + appName);
     }
 
 })();
