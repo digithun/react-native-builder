@@ -24,6 +24,8 @@ console.log('**Setup react-native-fcm for iOS**');
 'use strict';
 
 const appName = process.argv[2];
+const appPackage = process.argv[3]; //app package name, eg com.foo.bar
+
 if (appName === undefined) return console.log('**ERROR** appName not defined , please use \'node setup-fcm-ios myApp\'');
 
 (async() => {
@@ -106,8 +108,21 @@ if (appName === undefined) return console.log('**ERROR** appName not defined , p
 
 	console.log('***********************************\n***********************************\n***********************************');
 	console.log('**Auto Setup complete**\n\n please open your project and do the following:');
-	console.log(' Open your Xcdoe, Select your project Capabilities and enable Keychan Sharing and Background Modes > Remote notifications.');
+	console.log(' Open your Xcdoe, Select your project Capabilities > Background Modes > Remote notifications. Also check push notification');
 
+	let keyChain =
+		'<?xml version="1.0" encoding="UTF-8"?>\n' +
+		'<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n' +
+		'<plist version="1.0">\n' +
+		'<dict>\n' +
+		'	<key>keychain-access-groups</key>\n' +
+		'	<array>\n' +
+		'		<string>$(AppIdentifierPrefix)' + appPackage + '</string>\n' +
+		'	</array>\n' +
+		'</dict>\n' +
+		'</plist>';
+
+	await runCli('echo "'+keyChain+'" > '+appName+'ios/'+appName+'/'+appName+'.entitlements');
 
 })();
 
@@ -144,10 +159,12 @@ function addGoogleServiceFileToProj(appName) {
 			// work around for no resource in xcode
 			//myProj.addPbxGroup(['/Resources'], 'Resources', '', null);
 			const target = myProj.getFirstTarget().uuid;
-			myProj.addResourceFile(appName + '/GoogleService-Info.plist', {'target': target}, pbxGroupKey);
-			
+			myProj.addResourceFile(appName + '/GoogleService-Info.plist', {
+				'target': target
+			}, pbxGroupKey);
+
 			fs.writeFileSync(myProjPath, myProj.writeSync());
-  			console.log('Finished updating ' + myProjPath);
+			console.log('Finished updating ' + myProjPath);
 
 			console.log('xcode project modified');
 

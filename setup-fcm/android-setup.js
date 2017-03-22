@@ -29,7 +29,7 @@ const appName = process.argv[2];
 	await runCli('cd ' + appName + ' && npm i react-native-fcm --save');
 	await runCli('echo \'linking fcm to your project..\'');
 	await runCli('cd ' + appName + ' && react-native link react-native-fcm');
-	await runCli('cd ' + appName + ' && npm i xml2js --save');
+	await runCli('npm i xml2js --save');
 
 	await copyFile('setup-fcm/setup-resource/google-services.json', appName + '/android/app/google-services.json');
 	//add google-service dependencies

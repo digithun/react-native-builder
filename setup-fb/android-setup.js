@@ -28,10 +28,20 @@ const appPackage = process.argv[4]; //app package name, eg com.foo.bar
 	await runCli('cd ' + appName + ' && react-native install react-native-fbsdk');
 	await runCli('echo \'linking FB SDK to your project..\'');
 	await runCli('cd ' + appName + ' && react-native link react-native-fbsdk');
-	//await runCli('cd '+appName+' && npm i xml2js --save');
+	await runCli('npm i xml2js --save');
 
 	//android setup from https://github.com/facebook/react-native-fbsdk
 	//main application
+	//import
+	await insertLineInFile({
+		fileUrl: appName + '/android/app/src/main/java/' + appPackage.split('.').join('/') + '/MainApplication.java',
+		content: 'import com.facebook.CallbackManager;\nimport com.facebook.FacebookSdk;',
+		repString: 'public class MainApplication extends Application implements ReactApplication {',
+		option: 'before',
+		indent: ''
+	});
+
+	//Callback
 	await insertLineInFile({
 		fileUrl: appName + '/android/app/src/main/java/' + appPackage.split('.').join('/') + '/MainApplication.java',
 		content: '  private static CallbackManager mCallbackManager = CallbackManager.Factory.create();\n\n  protected static CallbackManager getCallbackManager() {\n    return mCallbackManager;\n  }',
@@ -43,7 +53,7 @@ const appPackage = process.argv[4]; //app package name, eg com.foo.bar
 	//MainApplication - onCreate
 	await insertLineInFile({
 		fileUrl: appName + '/android/app/src/main/java/' + appPackage.split('.').join('/') + '/MainApplication.java',
-		content: '  r getCallbackManager() {\n    return mCallbackManager;\n  }',
+		content: '    FacebookSdk.sdkInitialize(getApplicationContext());\n',
 		repString: '    super.onCreate();',
 		option: 'after',
 		indent: ''
