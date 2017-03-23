@@ -7,6 +7,7 @@ const {
 let appName = 'Clogii';
 let appPackage = 'com.clogii.clog';
 let FBId = '1824824607769616';
+let installFCM = true;
 
 (async() => {
     //initial setup
@@ -40,6 +41,7 @@ let FBId = '1824824607769616';
         indent: ''
     });
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////setup fbsdk
     if (FBId && FBId.length > 0) {
         //common
@@ -53,19 +55,21 @@ let FBId = '1824824607769616';
     }
 
     //////////////////////////setup fcm
-    //common
-    await runCli('echo \'Installing FCM..\'');
-    await runCli('cd ' + appName + ' && npm i react-native-fcm --save');
-    await runCli('echo \'Linking FCM to your project..\'');
-    await runCli('cd ' + appName + ' && react-native link react-native-fcm');
-    //Platform
-    await runCli('node setup-fcm/android-setup.js ' + appName);
-    await runCli('node setup-fcm/ios-setup.js ' + appName + ' ' + appPackage);
-    //TODO XCODE
-    console.log('**Auto Setup complete**\n\n please open your project and do the following:');
-    console.log(' Open your Xcode, Select your project Capabilities > Background Modes > Remote notifications. Also check push notification');
-    
-    await runCli('node setup-fcm/helper-setup.js ' + appName); //optional
+    if (installFCM) {
+        //common
+        await runCli('echo \'Installing FCM..\'');
+        await runCli('cd ' + appName + ' && npm i react-native-fcm --save');
+        await runCli('echo \'Linking FCM to your project..\'');
+        await runCli('cd ' + appName + ' && react-native link react-native-fcm');
+        //Platform
+        await runCli('node setup-fcm/android-setup.js ' + appName);
+        await runCli('node setup-fcm/ios-setup.js ' + appName + ' ' + appPackage);
+        //TODO XCODE
+        console.log('**Auto Setup complete**\n\n please open your project and do the following:');
+        console.log(' Open your Xcode, Select your project Capabilities > Background Modes > Remote notifications. Also check push notification');
+        console.log(' Also Set your team in Xcode');
+
+        await runCli('node setup-fcm/helper-setup.js ' + appName); //optional
+    }
+
 })();
-
-

@@ -45,10 +45,6 @@ if (appName === undefined) return console.log('**ERROR** appName not defined , p
 	await runCli('echo Install pod...');
 	await runCli('cd ' + appName + '/ios && pod install');
 
-	await runCli('echo Linking fcm...');
-	await runCli('cd ' + appName + ' && react-native unlink react-native-fcm');
-	await runCli('cd ' + appName + ' && react-native link react-native-fcm');
-
 	//add google-service to directory
 	copyFile('setup-fcm/setup-resource/GoogleService-Info.plist', appName + '/ios/' + appName + '/GoogleService-Info.plist');
 	//edit add google-service file to project
