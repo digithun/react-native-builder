@@ -30,6 +30,33 @@ var {
 
   const frameworkUrl = 'https://origincache.facebook.com/developers/resources/?id=facebook-ios-sdk-current.zip';
 
+  //add fcm import
+	await insertLineInFile({
+		fileUrl: appName + '/ios/' + appName + '/AppDelegate.m',
+		content: '#import <FBSDKCoreKit/FBSDKCoreKit.h>\n',
+		repString: '@implementation AppDelegate',
+		option: 'before',
+		indent: ''
+	});
+
+  //AppDelegate.m
+  await insertLineInFile({
+    fileUrl: appName + '/ios/' + appName + '/AppDelegate.m',
+    content: '  [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];',
+    repString: 'didFinishLaunchingWithOptions:(NSDictionary *)launchOptions\n{',
+    option: 'after',
+    indent: ''
+  });
+
+  //add delegate functions
+	await insertLineInFile({
+		fileUrl: appName + '/ios/' + appName + '/AppDelegate.m',
+		content: '///////FBSDK\n- (void)applicationDidBecomeActive:(UIApplication *)application {\n  [FBSDKAppEvents activateApp];\n}\n\n- (BOOL)application:(UIApplication *)application\n            openURL:(NSURL *)url\n  sourceApplication:(NSString *)sourceApplication\n         annotation:(id)annotation {\n  return [[FBSDKApplicationDelegate sharedInstance] application:application\n                                                         openURL:url\n                                               sourceApplication:sourceApplication\n                                                      annotation:annotation];\n}\n//////\n',
+		repString: '@end',
+		option: 'before',
+		indent: ''
+	});
+
   //POD add FB 'FBSDKCoreKit', 'FBSDKLoginKit', 'FBSDKShareKit'
   await insertLineInFile({
     fileUrl: appName + '/ios/Podfile',
