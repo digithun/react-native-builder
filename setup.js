@@ -1,13 +1,15 @@
 const setup_utils = require('./setup-common/setup.util.js');
 const {
     runCli,
-    insertLineInFile
+    insertLineInFile,
+    copyFile
 } = setup_utils;
 
 let appName = 'Clogii';
 let appPackage = 'com.clogii.clog';
 let FBId = '1824824607769616';
 let installFCM = true;
+let installNAP = true;
 
 (async() => {
     //initial setup
@@ -70,6 +72,38 @@ let installFCM = true;
         console.log(' Also Set your team in Xcode');
 
         await runCli('node setup-fcm/helper-setup.js ' + appName); //optional
+    }
+
+    /////////////////////////setup NAP (https://github.com/rabbotio/nap-react-native)
+    if (installNAP) {
+        // NAP
+        await runCli('git clone git@github.com:rabbotio/nap-react-native.git nap-react-native').catch((err)=>{});
+        // NAP Src
+        await runCli('cp -r nap-react-native/nap/lib ' + appName);
+        await runCli('cp -r nap-react-native/nap/components ' + appName);
+        await runCli('cp nap-react-native/nap/app.js ' + appName);
+        await runCli('cp nap-react-native/nap/app.json ' + appName);
+        await runCli('cp nap-react-native/nap/index.ios.js ' + appName);
+
+        // modify app name for NAP
+        await insertLineInFile({
+            fileUrl: appName + '/index.ios.js',
+            content: 'const nap = new NAPApp({\n  name: \'' + appName + '\',',
+            repString: 'const nap = new NAPApp({\n  name: \'nap\',',
+            option: 'replace',
+            indent: ''
+        });
+
+        // Library
+        await runCli('cd ' + appName + ' && npm i apollo-client graphql graphql-tag react-apollo react-native-device-info --save');
+
+        // Link
+        // https://github.com/rebeccahughes/react-native-device-info
+        await runCli('echo \'Linking react-native-device-info to your project..\'');
+        await runCli('cd ' + appName + ' && react-native link react-native-device-info');
+
+        // Run ios
+        //node node_modules / react - native / local - cli / cli.js run - ios
     }
 
 })();
