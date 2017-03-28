@@ -1,11 +1,12 @@
 # clogii-react-native
 ## Introduction
 
->This repo intention is to make setup react-naive with external modules much more easier. With our Automated script, it will edit AndroidManifest, Gradle, Java, .h, .m on initial setup to work perfectly with the module.
->
->How can this be useful?
+This repo intention is to make setup react-naive with external modules much more easier. With our Automated script, it will edit AndroidManifest, Gradle, Java, .h, .m on initial setup to work perfectly with the module.
+
+How can this be useful?
 Certainly when you have multiple project and want to avoid manual work of setting up these modules. With a single shell command you will get your new project up and running with pre-installed module.
 
+If you need more automated setup using other modules, just open an issue. (don't be shy)
 
 ## Project includes automated script for:
   - react-native-fbsdk
@@ -33,7 +34,7 @@ INSTALL_NAP=true            //Flag to install NAP, when true, make sure you have
 $ node setup
 ```
 
-### IOS Proeject setup
+### IOS Project setup
 
 Please open your XCODE project and do the following:
 
