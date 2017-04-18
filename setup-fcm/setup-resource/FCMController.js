@@ -8,7 +8,7 @@ const FCMEVENT = {
 };
 
 
-const serverKey = 'AIzaSyCndkHRvCS_TmAS7cdFMC_dtCxKVkJb5WQ';
+const serverKey = 'Your FCM Legacy key';
 
 class FCMController {
 
